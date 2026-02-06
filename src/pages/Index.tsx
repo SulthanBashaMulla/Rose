@@ -1,6 +1,6 @@
 import { useState } from "react";
 import StarryBackground from "@/components/StarryBackground";
-import BloomingFlower from "@/components/BloomingFlower";
+import BloomingRose from "@/components/BloomingRose";
 import FloatingParticles from "@/components/FloatingParticles";
 import LoveMessage from "@/components/LoveMessage";
 import MusicButton from "@/components/MusicButton";
@@ -9,36 +9,35 @@ const Index = () => {
   const [hasClicked, setHasClicked] = useState(false);
   const [showSecondMessage, setShowSecondMessage] = useState(false);
 
-  const handleFlowerBurst = () => {
+  const handleRoseBloom = () => {
     if (!hasClicked) {
       setHasClicked(true);
-      // Delay second message slightly for dramatic effect
       setTimeout(() => setShowSecondMessage(true), 800);
     }
   };
 
   return (
-    <div className="night-sky min-h-screen flex flex-col items-center justify-center relative">
-      {/* Starry night */}
+    <div className="night-sky min-h-screen flex flex-col items-center justify-center relative overflow-hidden">
+      {/* Starry night background */}
       <StarryBackground />
 
-      {/* Floating particles */}
+      {/* Floating petals / particles */}
       <FloatingParticles extraPetals={hasClicked} />
 
       {/* Main content */}
       <div className="relative z-10 flex flex-col items-center py-12 sm:py-16">
-        {/* Flower */}
-        <BloomingFlower onBurst={handleFlowerBurst} />
+        {/* Rose */}
+        <BloomingRose onBurst={handleRoseBloom} />
 
         {/* Love messages */}
         <LoveMessage showSecondMessage={showSecondMessage} />
       </div>
 
-      {/* Music button */}
+      {/* Music */}
       <MusicButton />
 
       {/* Footer */}
-      <span className="love-footer">
+      <span className="love-footer mt-6">
         Made with love ♡
       </span>
     </div>
