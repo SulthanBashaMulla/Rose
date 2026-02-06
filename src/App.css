@@ -1,190 +1,148 @@
-/* =========================
-   Root reset
-========================= */
-#root {
+/* RESET */
+* {
   margin: 0;
   padding: 0;
-  max-width: none;
-  text-align: center;
+  box-sizing: border-box;
 }
 
-/* =========================
-   Rose container
-========================= */
+#root {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ROSE CONTAINER */
 .rose-container {
   position: relative;
   width: 200px;
   height: 320px;
   margin: auto;
-  cursor: pointer;
 }
 
-/* =========================
-   Soft glow
-========================= */
+/* GLOW */
 .rose-glow {
   position: absolute;
-  inset: -40px;
-  background: radial-gradient(circle, rgba(255, 64, 120, 0.35), transparent 65%);
-  filter: blur(28px);
+  inset: 0;
+  background: radial-gradient(circle, rgba(255, 80, 120, 0.35), transparent 65%);
+  filter: blur(30px);
   z-index: 0;
 }
 
-/* =========================
-   Petals
-========================= */
+/* PETALS */
 .rose-petal {
   position: absolute;
-  top: 95px;
+  top: 90px;
   left: 50%;
-  width: 54px;
-  height: 74px;
-  background: linear-gradient(
-    145deg,
-    #ff7aa2 0%,
-    #e61a4f 55%,
-    #9c0027 100%
-  );
-  border-radius: 65% 65% 80% 80%;
-  transform-origin: center bottom;
-  opacity: 0;
-  z-index: 2;
-  box-shadow:
-    inset -6px -10px 14px rgba(0, 0, 0, 0.25),
-    0 6px 10px rgba(255, 60, 100, 0.25);
+  width: 56px;
+  height: 72px;
+  background: radial-gradient(circle at top, #ff9ab5, #d81b60);
+  border-radius: 70% 70% 90% 90%;
+  transform-origin: bottom center;
   transform:
     translate(-50%, var(--spread))
     rotate(var(--rotate))
     scale(var(--scale));
-  animation: rose-bloom 1.7s cubic-bezier(0.25, 1.3, 0.5, 1) forwards;
+  opacity: 0;
+  animation: bloom 1.8s ease-out forwards;
   animation-delay: var(--delay);
 }
 
-@keyframes rose-bloom {
-  0% {
+/* BLOOM ANIMATION */
+@keyframes bloom {
+  from {
     opacity: 0;
     transform:
       translate(-50%, 0)
-      rotate(var(--rotate))
+      rotate(0deg)
       scale(0.4);
   }
-  100% {
+  to {
     opacity: 1;
-    transform:
-      translate(-50%, var(--spread))
-      rotate(var(--rotate))
-      scale(var(--scale));
   }
 }
 
-/* =========================
-   Center bud
-========================= */
+/* CENTER */
 .rose-center {
   position: absolute;
-  top: 112px;
+  top: 120px;
   left: 50%;
   width: 26px;
   height: 26px;
-  transform: translateX(-50%);
+  background: radial-gradient(circle, #ff6f91, #880e4f);
   border-radius: 50%;
-  background: radial-gradient(circle, #ff7a9c, #7a001c);
-  box-shadow: 0 0 14px rgba(255, 80, 120, 0.6);
+  transform: translateX(-50%);
   z-index: 4;
 }
 
-/* =========================
-   Stem
-========================= */
+/* STEM */
 .rose-stem {
   position: absolute;
-  top: 155px;
+  top: 160px;
   left: 50%;
-  width: 6px;
+  width: 7px;
   height: 150px;
+  background: linear-gradient(#1b5e20, #388e3c);
+  border-radius: 6px;
   transform: translateX(-50%);
-  background: linear-gradient(
-    to bottom,
-    #2e7d32,
-    #1b5e20
-  );
-  border-radius: 3px;
-  z-index: 1;
 }
 
-/* =========================
-   Leaves
-========================= */
+/* LEAVES */
 .rose-leaf {
   position: absolute;
-  width: 38px;
-  height: 18px;
-  background: linear-gradient(145deg, #43a047, #1b5e20);
+  width: 44px;
+  height: 22px;
+  background: linear-gradient(135deg, #43a047, #1b5e20);
   border-radius: 100% 0;
-  box-shadow: inset -4px -4px 6px rgba(0, 0, 0, 0.25);
 }
 
 .rose-leaf.left {
-  left: -36px;
-  top: 44px;
-  transform: rotate(-22deg);
+  left: -38px;
+  top: 55px;
+  transform: rotate(-25deg);
 }
 
 .rose-leaf.right {
-  right: -36px;
-  top: 76px;
-  transform: scaleX(-1) rotate(-22deg);
+  right: -38px;
+  top: 85px;
+  transform: scaleX(-1) rotate(-25deg);
 }
 
-/* =========================
-   Thorns
-========================= */
+/* THORNS */
 .rose-thorn {
   position: absolute;
-  width: 10px;
-  height: 6px;
+  width: 12px;
+  height: 8px;
   background: #1b5e20;
   clip-path: polygon(0 50%, 100% 0, 100% 100%);
 }
 
 .rose-thorn.t1 {
-  left: -8px;
-  top: 38px;
+  left: -10px;
+  top: 40px;
 }
 
 .rose-thorn.t2 {
-  right: -8px;
-  top: 88px;
+  right: -10px;
+  top: 90px;
   transform: scaleX(-1);
 }
 
-/* =========================
-   Click burst
-========================= */
+/* HEART / PETAL BURST */
 .rose-burst {
   position: absolute;
+  top: 115px;
   left: 50%;
-  top: 112px;
-  transform: translate(-50%, -50%);
-  animation: rose-burst 2s ease-out forwards;
   font-size: 18px;
-  pointer-events: none;
-  z-index: 5;
+  transform: translate(-50%, -50%);
+  animation: burst 2s ease-out forwards;
 }
 
-@keyframes rose-burst {
-  0% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(0.6);
-  }
-  100% {
-    opacity: 0;
+@keyframes burst {
+  to {
     transform:
-      translate(
-        calc(-50% + var(--bx)),
-        calc(-50% + var(--by))
-      )
-      rotate(var(--br))
-      scale(1.3);
+      translate(calc(-50% + var(--bx)), calc(-50% + var(--by)))
+      rotate(var(--br));
+    opacity: 0;
   }
 }
