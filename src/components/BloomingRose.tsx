@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 
-interface BloomingRoseProps {
+interface BloomingFlowerProps {
   onBurst?: () => void;
 }
 
@@ -12,22 +12,22 @@ type Burst = {
   emoji: string;
 };
 
-const BloomingRose = ({ onBurst }: BloomingRoseProps) => {
+const BloomingFlower = ({ onBurst }: BloomingFlowerProps) => {
   const [bursts, setBursts] = useState<Burst[]>([]);
 
   const handleClick = useCallback(() => {
     onBurst?.();
 
-    const newBursts: Burst[] = Array.from({ length: 16 }, (_, i) => {
-      const angle = (i / 16) * Math.PI * 2;
-      const distance = 60 + Math.random() * 70;
+    const newBursts: Burst[] = Array.from({ length: 14 }, (_, i) => {
+      const angle = (i / 14) * Math.PI * 2;
+      const distance = 70 + Math.random() * 60;
 
       return {
         id: Date.now() + i,
         bx: Math.cos(angle) * distance,
         by: Math.sin(angle) * distance - 40,
         br: Math.random() * 360,
-        emoji: ["🌹", "❤️", "💕", "✨", "🩷"][Math.floor(Math.random() * 5)],
+        emoji: ["🌸", "💕", "✨", "💗", "🩷", "♡"][Math.floor(Math.random() * 6)],
       };
     });
 
@@ -35,68 +35,72 @@ const BloomingRose = ({ onBurst }: BloomingRoseProps) => {
 
     setTimeout(() => {
       setBursts((prev) =>
-        prev.filter((b) => !newBursts.some((n) => n.id === b.id))
+        prev.filter((b) => !newBursts.find((n) => n.id === b.id))
       );
-    }, 2000);
+    }, 2200);
   }, [onBurst]);
 
-  // Spiral rose petals
-  const petals = Array.from({ length: 20 }, (_, i) => ({
-    rotate: `${i * 20}deg`,
-    scale: 0.5 + i * 0.035,
-    spread: `${-6 - i * 2}px`,
-    delay: `${0.6 + i * 0.06}s`,
-  }));
+  /* 🌹 Rose-style petal layers */
+  const petals = [
+    // inner tight petals
+    { r: 0, s: 0.55, y: -6, d: 0.6 },
+    { r: 35, s: 0.6, y: -4, d: 0.7 },
+    { r: -35, s: 0.6, y: -4, d: 0.7 },
+
+    // middle petals
+    { r: 0, s: 0.85, y: 4, d: 0.9 },
+    { r: 60, s: 0.85, y: 6, d: 1.0 },
+    { r: -60, s: 0.85, y: 6, d: 1.0 },
+
+    // outer petals
+    { r: 0, s: 1.1, y: 16, d: 1.2 },
+    { r: 80, s: 1.1, y: 18, d: 1.3 },
+    { r: -80, s: 1.1, y: 18, d: 1.3 },
+  ];
 
   return (
     <div
-      className="rose-container"
+      className="flower-container cursor-pointer"
       onClick={handleClick}
       role="button"
-      aria-label="Tap the rose"
+      aria-label="Tap the flower"
     >
       {/* Glow */}
-      <div className="rose-glow" />
+      <div className="flower-glow" />
 
       {/* Petals */}
       {petals.map((p, i) => (
         <div
           key={i}
-          className="rose-petal"
-          style={
-            {
-              "--rotate": p.rotate,
-              "--scale": p.scale,
-              "--spread": p.spread,
-              "--delay": p.delay,
-            } as React.CSSProperties
-          }
+          className="petal"
+          style={{
+            "--rotate": `${p.r}deg`,
+            "--scale": p.s,
+            "--spread": `${p.y}px`,
+            "--delay": `${p.d}s`,
+          } as React.CSSProperties}
         />
       ))}
 
       {/* Center */}
-      <div className="rose-center" />
+      <div className="flower-center" />
 
-      {/* Stem */}
-      <div className="rose-stem">
-        <span className="rose-leaf left" />
-        <span className="rose-leaf right" />
-        <span className="rose-thorn t1" />
-        <span className="rose-thorn t2" />
+      {/* Stem & leaves */}
+      <div className="stem">
+        <div className="leaf leaf-left" />
+        <div className="leaf leaf-right" />
       </div>
 
-      {/* Click burst */}
+      {/* Burst emojis */}
       {bursts.map((b) => (
         <div
           key={b.id}
-          className="rose-burst"
-          style={
-            {
-              "--bx": `${b.bx}px`,
-              "--by": `${b.by}px`,
-              "--br": `${b.br}deg`,
-            } as React.CSSProperties
-          }
+          className="burst-heart"
+          style={{
+            "--bx": `${b.bx}px`,
+            "--by": `${b.by}px`,
+            "--br": `${b.br}deg`,
+          } as React.CSSProperties}
         >
           {b.emoji}
         </div>
@@ -105,4 +109,4 @@ const BloomingRose = ({ onBurst }: BloomingRoseProps) => {
   );
 };
 
-export default BloomingRose;
+export default BloomingFlower;
