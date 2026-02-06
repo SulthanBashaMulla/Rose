@@ -18,73 +18,85 @@ const BloomingRose = ({ onBurst }: BloomingRoseProps) => {
   const handleClick = useCallback(() => {
     onBurst?.();
 
-    const newBursts = Array.from({ length: 14 }, (_, i) => {
-      const angle = (i / 14) * Math.PI * 2;
-      const distance = 70 + Math.random() * 60;
+    const newBursts: Burst[] = Array.from({ length: 16 }, (_, i) => {
+      const angle = (i / 16) * Math.PI * 2;
+      const distance = 60 + Math.random() * 70;
 
       return {
         id: Date.now() + i,
         bx: Math.cos(angle) * distance,
         by: Math.sin(angle) * distance - 40,
         br: Math.random() * 360,
-        emoji: ["🌹", "❤️", "✨", "💕", "🩷"][Math.floor(Math.random() * 5)],
+        emoji: ["🌹", "❤️", "💕", "✨", "🩷"][Math.floor(Math.random() * 5)],
       };
     });
 
-    setBursts((p) => [...p, ...newBursts]);
+    setBursts((prev) => [...prev, ...newBursts]);
 
     setTimeout(() => {
-      setBursts((p) => p.filter((b) => !newBursts.find((n) => n.id === b.id)));
-    }, 2200);
+      setBursts((prev) =>
+        prev.filter((b) => !newBursts.some((n) => n.id === b.id))
+      );
+    }, 2000);
   }, [onBurst]);
 
-  const rosePetals = Array.from({ length: 18 }, (_, i) => ({
-    rotate: `${i * 18}deg`,
-    delay: `${0.8 + i * 0.08}s`,
+  // Spiral rose petals
+  const petals = Array.from({ length: 20 }, (_, i) => ({
+    rotate: `${i * 20}deg`,
+    scale: 0.5 + i * 0.035,
     spread: `${-6 - i * 2}px`,
-    scale: 0.55 + i * 0.035,
+    delay: `${0.6 + i * 0.06}s`,
   }));
 
   return (
     <div
-      className="rose-container cursor-pointer"
+      className="rose-container"
       onClick={handleClick}
       role="button"
-      aria-label="Click the rose"
+      aria-label="Tap the rose"
     >
+      {/* Glow */}
       <div className="rose-glow" />
 
-      {rosePetals.map((p, i) => (
+      {/* Petals */}
+      {petals.map((p, i) => (
         <div
           key={i}
           className="rose-petal"
-          style={{
-            "--rotate": p.rotate,
-            "--delay": p.delay,
-            "--spread": p.spread,
-            "--scale": p.scale,
-          } as React.CSSProperties}
+          style={
+            {
+              "--rotate": p.rotate,
+              "--scale": p.scale,
+              "--spread": p.spread,
+              "--delay": p.delay,
+            } as React.CSSProperties
+          }
         />
       ))}
 
+      {/* Center */}
       <div className="rose-center" />
 
+      {/* Stem */}
       <div className="rose-stem">
-        <div className="rose-leaf left" />
-        <div className="rose-leaf right" />
-        <div className="rose-thorn t1" />
-        <div className="rose-thorn t2" />
+        <span className="rose-leaf left" />
+        <span className="rose-leaf right" />
+        <span className="rose-thorn t1" />
+        <span className="rose-thorn t2" />
       </div>
 
+      {/* Click burst */}
       {bursts.map((b) => (
         <div
           key={b.id}
           className="rose-burst"
-          style={{
-            "--bx": `${b.bx}px`,
-            "--by": `${b.by}px`,
-            "--br": `${b.br}deg`,
-          } as React.CSSProperties}
+          style={
+            {
+              "--bx": `${b.bx}px`,
+              "--by": `${b.by}px`,
+              "--br": `${b.br}deg`,
+            } as React.CSSProperties
+          }
         >
           {b.emoji}
         </div>
