@@ -8,13 +8,13 @@ const LoveMessage = ({ showSecondMessage }: LoveMessageProps) => {
       {/* Main message */}
       <div className="message-reveal" style={{ "--msg-delay": "5.5s" } as React.CSSProperties}>
         <p className="font-romantic text-rose-light text-2xl sm:text-3xl md:text-4xl leading-relaxed max-w-lg mx-auto">
-          For my favorite person in the whole world 🌸
+          aap meray Sabsey Favourite person ho Baba jiii🌸
         </p>
       </div>
 
       <div className="message-reveal" style={{ "--msg-delay": "7s" } as React.CSSProperties}>
         <p className="font-romantic text-blush text-xl sm:text-2xl md:text-3xl leading-relaxed max-w-md mx-auto">
-          I love you more every day 💕
+          I love you more every day Samreen alias Saahiba jii  💕
         </p>
       </div>
 
