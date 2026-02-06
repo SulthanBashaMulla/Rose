@@ -1,116 +1,96 @@
 import { useState, useCallback } from "react";
 
-interface BloomingFlowerProps {
+interface BloomingRoseProps {
   onBurst?: () => void;
 }
 
-const BloomingFlower = ({ onBurst }: BloomingFlowerProps) => {
-  const [bursts, setBursts] = useState<Array<{ id: number; x: number; y: number; bx: number; by: number; br: number; emoji: string }>>([]);
+type Burst = {
+  id: number;
+  bx: number;
+  by: number;
+  br: number;
+  emoji: string;
+};
+
+const BloomingRose = ({ onBurst }: BloomingRoseProps) => {
+  const [bursts, setBursts] = useState<Burst[]>([]);
 
   const handleClick = useCallback(() => {
     onBurst?.();
-    
-    // Create burst hearts/sparkles
-    const newBursts = Array.from({ length: 12 }, (_, i) => {
-      const angle = (i / 12) * Math.PI * 2;
-      const distance = 60 + Math.random() * 80;
+
+    const newBursts = Array.from({ length: 14 }, (_, i) => {
+      const angle = (i / 14) * Math.PI * 2;
+      const distance = 70 + Math.random() * 60;
+
       return {
         id: Date.now() + i,
-        x: 0,
-        y: 0,
         bx: Math.cos(angle) * distance,
         by: Math.sin(angle) * distance - 40,
         br: Math.random() * 360,
-        emoji: ["💕", "🌸", "✨", "💗", "🩷", "♡"][Math.floor(Math.random() * 6)],
+        emoji: ["🌹", "❤️", "✨", "💕", "🩷"][Math.floor(Math.random() * 5)],
       };
     });
-    
-    setBursts((prev) => [...prev, ...newBursts]);
-    
-    // Clean up after animation
+
+    setBursts((p) => [...p, ...newBursts]);
+
     setTimeout(() => {
-      setBursts((prev) => prev.filter((b) => !newBursts.find((nb) => nb.id === b.id)));
-    }, 2000);
+      setBursts((p) => p.filter((b) => !newBursts.find((n) => n.id === b.id)));
+    }, 2200);
   }, [onBurst]);
 
-  // Inner petals (lighter pink, closer to center)
-  const innerPetals = Array.from({ length: 8 }, (_, i) => ({
-    rotate: `${(i / 8) * 360}deg`,
-    delay: `${1.5 + i * 0.15}s`,
-    spread: "-10px",
-  }));
-
-  // Outer petals (deeper pink, spread further)
-  const outerPetals = Array.from({ length: 10 }, (_, i) => ({
-    rotate: `${(i / 10) * 360 + 18}deg`,
-    delay: `${2.5 + i * 0.12}s`,
-    spread: "-20px",
+  const rosePetals = Array.from({ length: 18 }, (_, i) => ({
+    rotate: `${i * 18}deg`,
+    delay: `${0.8 + i * 0.08}s`,
+    spread: `${-6 - i * 2}px`,
+    scale: 0.55 + i * 0.035,
   }));
 
   return (
-    <div 
-      className="flower-container cursor-pointer" 
+    <div
+      className="rose-container cursor-pointer"
       onClick={handleClick}
       role="button"
-      aria-label="Click the flower for a surprise"
+      aria-label="Click the rose"
     >
-      {/* Glow effect */}
-      <div className="flower-glow" />
+      <div className="rose-glow" />
 
-      {/* Outer petals */}
-      {outerPetals.map((petal, i) => (
+      {rosePetals.map((p, i) => (
         <div
-          key={`outer-${i}`}
-          className="petal petal-outer"
+          key={i}
+          className="rose-petal"
           style={{
-            "--rotate": petal.rotate,
-            "--delay": petal.delay,
-            "--spread": petal.spread,
+            "--rotate": p.rotate,
+            "--delay": p.delay,
+            "--spread": p.spread,
+            "--scale": p.scale,
           } as React.CSSProperties}
         />
       ))}
 
-      {/* Inner petals */}
-      {innerPetals.map((petal, i) => (
-        <div
-          key={`inner-${i}`}
-          className="petal petal-inner"
-          style={{
-            "--rotate": petal.rotate,
-            "--delay": petal.delay,
-            "--spread": petal.spread,
-          } as React.CSSProperties}
-        />
-      ))}
+      <div className="rose-center" />
 
-      {/* Center */}
-      <div className="flower-center" />
-
-      {/* Stem */}
-      <div className="stem">
-        <div className="leaf leaf-left" style={{ "--leaf-rotate": "-30deg" } as React.CSSProperties} />
-        <div className="leaf leaf-right" style={{ "--leaf-rotate": "30deg" } as React.CSSProperties} />
+      <div className="rose-stem">
+        <div className="rose-leaf left" />
+        <div className="rose-leaf right" />
+        <div className="rose-thorn t1" />
+        <div className="rose-thorn t2" />
       </div>
 
-      {/* Burst effects */}
-      {bursts.map((burst) => (
+      {bursts.map((b) => (
         <div
-          key={burst.id}
-          className="burst-heart"
+          key={b.id}
+          className="rose-burst"
           style={{
-            left: "50%",
-            top: "50%",
-            "--bx": `${burst.bx}px`,
-            "--by": `${burst.by}px`,
-            "--br": `${burst.br}deg`,
-            fontSize: `${Math.random() * 12 + 14}px`,
+            "--bx": `${b.bx}px`,
+            "--by": `${b.by}px`,
+            "--br": `${b.br}deg`,
           } as React.CSSProperties}
         >
-          {burst.emoji}
+          {b.emoji}
         </div>
       ))}
     </div>
   );
 };
 
-export default BloomingFlower;
+export default BloomingRose;

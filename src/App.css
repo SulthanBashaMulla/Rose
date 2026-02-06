@@ -5,3 +5,119 @@
   padding: 0;
   text-align: center;
 }
+.rose-container {
+  position: relative;
+  width: 180px;
+  height: 300px;
+  margin: auto;
+}
+
+.rose-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, rgba(255, 0, 80, 0.25), transparent 60%);
+  filter: blur(24px);
+}
+
+.rose-petal {
+  position: absolute;
+  top: 90px;
+  left: 50%;
+  width: 48px;
+  height: 64px;
+  background: linear-gradient(145deg, #ff3b6a, #b8002f);
+  border-radius: 60% 60% 70% 70%;
+  transform:
+    translate(-50%, var(--spread))
+    rotate(var(--rotate))
+    scale(var(--scale));
+  transform-origin: bottom center;
+  animation: roseBloom 1.6s ease-out forwards;
+  animation-delay: var(--delay);
+  opacity: 0;
+}
+
+@keyframes roseBloom {
+  to {
+    opacity: 1;
+  }
+}
+
+.rose-center {
+  position: absolute;
+  top: 108px;
+  left: 50%;
+  width: 26px;
+  height: 26px;
+  background: radial-gradient(circle, #ff4d6d, #800020);
+  border-radius: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+}
+
+.rose-stem {
+  position: absolute;
+  top: 150px;
+  left: 50%;
+  width: 6px;
+  height: 140px;
+  background: linear-gradient(#1b5e20, #2e7d32);
+  transform: translateX(-50%);
+}
+
+.rose-leaf {
+  position: absolute;
+  width: 36px;
+  height: 18px;
+  background: #2e7d32;
+  border-radius: 100% 0;
+}
+
+.rose-leaf.left {
+  left: -34px;
+  top: 40px;
+  transform: rotate(-20deg);
+}
+
+.rose-leaf.right {
+  right: -34px;
+  top: 70px;
+  transform: scaleX(-1) rotate(-20deg);
+}
+
+.rose-thorn {
+  position: absolute;
+  width: 10px;
+  height: 6px;
+  background: #1b5e20;
+  clip-path: polygon(0 50%, 100% 0, 100% 100%);
+}
+
+.rose-thorn.t1 {
+  left: -8px;
+  top: 30px;
+}
+
+.rose-thorn.t2 {
+  right: -8px;
+  top: 80px;
+  transform: scaleX(-1);
+}
+
+.rose-burst {
+  position: absolute;
+  left: 50%;
+  top: 110px;
+  transform: translate(-50%, -50%);
+  animation: burst 2s ease-out forwards;
+  font-size: 18px;
+}
+
+@keyframes burst {
+  to {
+    transform:
+      translate(calc(-50% + var(--bx)), calc(-50% + var(--by)))
+      rotate(var(--br));
+    opacity: 0;
+  }
+}
